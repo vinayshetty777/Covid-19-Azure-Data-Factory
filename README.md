@@ -1,282 +1,187 @@
-# COVID-19 Azure Data Factory Pipeline
+# COVID-19 Azure Data Factory
 
-A comprehensive cloud-native data engineering solution that ingests, transforms, and analyzes COVID-19 epidemiological data using Azure Data Factory, demonstrating enterprise-grade data pipeline architecture.
+Cloud-native data engineering solution analyzing COVID-19 epidemiological data. Demonstrates multi-layered data architecture and Power BI analytics.
 
-## 🎯 Project Overview
+## 📋 Overview
 
-This project demonstrates a complete data engineering workflow for COVID-19 analysis using Microsoft Azure cloud services. It ingests data from public health sources (ECDC and Eurostat), applies sophisticated transformations via PySpark, and delivers analytics-ready datasets for business intelligence and research.
+This project demonstrates a complete data engineering workflow for COVID-19 analysis using Microsoft Azure cloud services. It ingests data from public health sources, applies sophisticated transformations, and delivers analytics-ready datasets for business intelligence and research.
 
-**Learning Objectives:**
-- Master Azure Data Factory pipeline orchestration
-- Implement multi-layered data architecture (Bronze-Silver-Gold)
-- Process large-scale public health datasets
-- Integrate cloud storage with analytics platforms
-- Build CI/CD automation with GitHub
+**Tech:** Azure Data Factory, Data Lake Storage, HDInsight, Power BI, Python/PySpark  
+**Data Sources:** ECDC, Eurostat  
+**Scope:** Public health data analytics and visualization  
+**Status:** ✅ Complete Project
+
+---
 
 ## 🏗️ Architecture
 
 ```
 [Public Data Sources]
-├→ ECDC (European COVID-19 Data)
-└→ Eurostat (Demographics & Economics)
+├→ ECDC COVID-19 Data
+└→ Eurostat Demographics
     ↓
 [Azure Data Factory]
-├→ Linked Services (Connection Management)
-├→ Datasets (Schema Definition)
-├→ Pipelines (ETL Orchestration)
-└→ Triggers (Automation)
+├→ Linked Services
+├→ Datasets
+├→ Pipelines
+└→ Triggers
     ↓
-[Azure Data Lake Storage - Layered]
-├→ Bronze Layer (Raw data)
-├→ Silver Layer (Cleaned & validated)
-└→ Gold Layer (Analytics-ready)
+[Azure Data Lake]
+├→ Bronze (Raw)
+├→ Silver (Cleaned)
+└→ Gold (Analytics)
     ↓
-[Processing Layer]
-├→ HDInsight (Spark Clusters)
-├→ Databricks Notebooks
-└→ Data Transformation
-    ↓
-[Analytics & Visualization]
-├→ Azure SQL Database
+[Processing & Analytics]
 └→ Power BI Reports
 ```
 
+---
+
 ## 🛠️ Tech Stack
 
-- **Cloud Platform:** Microsoft Azure
-- **Core Services:**
-  - Azure Data Factory (ADF)
-  - Azure Data Lake Storage Gen2
-  - Azure SQL Database
-  - HDInsight with Spark
-- **Languages:** Python, PySpark, SQL, PowerShell
-- **CI/CD:** GitHub Actions, Azure DevOps
-- **Visualization:** Power BI, Excel
-- **Data Sources:** ECDC API, Eurostat
+| Component | Technology |
+|-----------|------------|
+| **Cloud** | Microsoft Azure |
+| **ETL** | Azure Data Factory |
+| **Storage** | Azure Data Lake Gen2 |
+| **Database** | Azure SQL Database |
+| **Processing** | HDInsight, PySpark |
+| **Visualization** | Power BI, Excel |
+
+---
 
 ## 📁 Project Structure
 
 ```
 Covid-19-Azure-Data-Factory/
 ├── src/
-│   ├── adf-pipelines/          # ADF Pipeline definitions
-│   │   ├── ingest_pipeline.json
-│   │   ├── transform_pipeline.json
-│   │   └── load_pipeline.json
-│   ├── linked-services/        # Azure Service connections
-│   │   ├── adls_linked_service.json
-│   │   ├── sql_linked_service.json
-│   │   └── storage_linked_service.json
-│   ├── datasets/               # Data schema definitions
-│   │   ├── ecdc_dataset.json
-│   │   ├── eurostat_dataset.json
-│   │   └── sql_dataset.json
-│   ├── notebooks/              # Spark transformation logic
-│   │   ├── data_cleaning.ipynb
-│   │   ├── data_enrichment.ipynb
-│   │   └── aggregations.ipynb
-│   └── scripts/
-│       ├── setup_hdinsight.sh
-│       └── configure_adf.ps1
+│   ├── adf-pipelines/         # Pipeline definitions
+│   ├── linked-services/       # Service connections
+│   ├── datasets/              # Schema definitions
+│   ├── notebooks/             # Spark transformations
+│   └── scripts/               # Setup scripts
 ├── data/
-│   ├── lookup_tables/          # Reference data
-│   │   ├── countries.csv
-│   │   ├── regions.csv
-│   │   └── date_dimensions.csv
-│   └── sample/
-│       └── sample_covid_data.csv
-├── reports/                     # Power BI & Analysis
-│   ├── covid_dashboard.pbix
-│   └── regional_analysis.xlsx
-├── terraform/                  # Infrastructure as Code
-│   ├── variables.tf
-│   ├── main.tf
-│   └── outputs.tf
-├── github/workflows/           # CI/CD workflows
-│   ├── deploy_adf.yaml
-│   └── run_tests.yaml
-├── docs/                       # Documentation
-│   ├── architecture.md
-│   ├── data_dictionary.md
-│   └── runbook.md
+│   ├── lookup_tables/         # Reference data
+│   └── sample/                # Sample data
+├── reports/                   # Power BI dashboards
+├── terraform/                 # Infrastructure as Code
+├── github/workflows/          # CI/CD pipelines
 └── README.md
 ```
 
-## 📊 Data Sources
+---
 
-### ECDC (European Centre for Disease Prevention and Control)
-
-- **Data:** COVID-19 cases, deaths, testing rates
-- **Granularity:** Country and region level
-- **Frequency:** Daily updates
-- **Format:** JSON/CSV via API
-
-### Eurostat
-
-- **Data:** Population, economic indicators, demographics
-- **Granularity:** Country and regional levels
-- **Frequency:** Quarterly/Annual
-- **Format:** XLSX, CSV
-
-### Lookup Tables
-
-- Country codes and regions
-- Date dimensions
-- Geographic hierarchies
-- Classification codes
-
-## 🚀 Setup & Installation
+## 🚀 Quick Start
 
 ### Prerequisites
-- Azure subscription with Owner/Contributor permissions
-- Azure CLI installed
-- PowerShell 7+
-- Terraform (for IaC deployment)
-- Git for version control
+- Azure subscription
+- Azure Data Factory
+- Power BI (optional)
+- Terraform (for IaC)
 
-### Azure Resource Deployment
+### Deployment
 
-1. **Create Resource Group:**
-   ```bash
-   az group create \
-     --name covid-rg \
-     --location eastus
-   ```
+```bash
+# Clone repository
+git clone https://github.com/vinayshetty777/Covid-19-Azure-Data-Factory.git
 
-2. **Create Storage Account (Data Lake):**
-   ```bash
-   az storage account create \
-     --name covidadlsgen2 \
-     --resource-group covid-rg \
-     --kind StorageV2 \
-     --hierarchical-namespace true
-   ```
+# Create resource group
+az group create \
+  --name covid-rg \
+  --location eastus
 
-3. **Create SQL Database:**
-   ```bash
-   az sql server create \
-     --name covid-sql-server \
-     --resource-group covid-rg \
-     --admin-user sqlAdmin \
-     --admin-password YourPassword123!
-   
-   az sql db create \
-     --server covid-sql-server \
-     --name covid_analytics \
-     --resource-group covid-rg
-   ```
+# Deploy with Terraform
+cd terraform/
+terraform init
+terraform plan
+terraform apply
+```
 
-4. **Deploy with Terraform:**
-   ```bash
-   cd terraform/
-   terraform init
-   terraform plan
-   terraform apply
-   ```
+---
 
-5. **Create Azure Data Factory:**
-   - Use Azure Portal UI
-   - Or deploy via ARM template
+## 📊 Data Flow
 
-### Database Setup
+```
+ECDC Data + Eurostat Data
+    ↓
+[Ingestion Pipeline]
+→ Azure Data Lake (Raw/Bronze)
+    ↓
+[Validation Pipeline]
+→ Data quality checks
+→ Error logging
+    ↓
+[Transformation Pipeline]
+├→ Cleansing
+├→ Deduplication
+└→ Enrichment
+→ Azure Data Lake (Processed/Silver)
+    ↓
+[Aggregation Pipeline]
+├→ Daily summaries
+├→ Regional analysis
+└→ Trend calculation
+→ Azure Data Lake (Analytics/Gold)
+    ↓
+[Power BI Analysis]
+```
+
+---
+
+## ✨ Key Features
+
+- **Automated Data Ingestion** - From public health APIs
+- **Multi-Layer Architecture** - Bronze-Silver-Gold pattern
+- **Data Quality** - Validation and error handling
+- **PySpark Processing** - Complex transformations
+- **Power BI Dashboards** - Interactive visualizations
+- **CI/CD Automation** - GitHub Actions integration
+
+---
+
+## 📈 Key Metrics
+
+| Metric | Description |
+|--------|------------|
+| **Daily Cases** | New confirmed COVID cases |
+| **Case Fatality Rate** | Deaths / Cases ratio |
+| **Testing Rate** | Tests per 100K population |
+| **Regional Variation** | Comparative analysis |
+| **Trend Analysis** | 7-day and 14-day averages |
+
+---
+
+## 🔧 Database Setup
 
 ```bash
 # Connect to SQL Database
 sqlcmd -S covid-sql-server.database.windows.net \
-       -U sqlAdmin \
-       -P YourPassword123!
+       -U sqlAdmin
 
 # Run setup script
 :r sql/create_tables.sql
 ```
 
-## 🔄 ETL Workflow
+---
 
-### Stage 1: Ingestion (Bronze Layer)
+## 📊 Data Processing Examples
 
-```
-Raw ECDC Data → ADLS Raw folder
-Raw Eurostat Data → ADLS Raw folder
-↓
-ADF Copy Activity
-↓
-ADLS Bronze Layer (immutable, audit trail)
-```
-
-### Stage 2: Validation & Cleaning (Silver Layer)
-
-```
-Bronze Layer Data
-↓
-[Spark Notebook: data_cleaning.ipynb]
-├→ Schema validation
-├→ Null/outlier handling
-├→ Type conversion
-├→ Deduplication
-└→ Format standardization
-↓
-ADLS Silver Layer (validated, deduplicated)
-```
-
-### Stage 3: Transformation & Aggregation (Gold Layer)
-
-```
-Silver Layer Data
-↓
-[Spark Notebook: data_enrichment.ipynb]
-├→ Join with lookup tables
-├→ Geographic enrichment
-├→ Time-series features
-└→ Business metrics calculation
-↓
-[Spark Notebook: aggregations.ipynb]
-├→ Daily summaries
-├→ Regional aggregations
-├→ Trend calculations
-└→ KPI computation
-↓
-ADLS Gold Layer (analytics-ready)
-↓
-Azure SQL Database (dimensional model)
-```
-
-### Stage 4: Analytics & Visualization
-
-```
-Gold Layer Data
-↓
-Power BI / Excel
-↓
-Interactive Dashboards & Reports
-```
-
-## 📈 Data Processing Examples
-
-### Example: Regional COVID Statistics
+### Regional COVID Statistics
 
 ```python
-# PySpark transformation
 df = spark.read.parquet("adls/silver/covid_data")
 
 regional_stats = df \
     .groupBy("region", "date") \
     .agg(
         sum("cases").alias("daily_cases"),
-        sum("deaths").alias("daily_deaths"),
-        sum("tests").alias("daily_tests")
-    ) \
-    .withColumn("case_fatality_rate", 
-                col("daily_deaths") / col("daily_cases"))
-
-regional_stats.write \
-    .mode("overwrite") \
-    .parquet("adls/gold/regional_statistics")
+        sum("deaths").alias("daily_deaths")
+    )
 ```
 
-### Example: Time-Series Analysis
+### Time-Series Analysis
 
 ```sql
--- SQL aggregation for trends
 SELECT 
     date,
     region,
@@ -284,159 +189,73 @@ SELECT
         PARTITION BY region 
         ORDER BY date 
         ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
-    ) AS cases_7day_avg,
-    LAG(daily_cases) OVER (PARTITION BY region ORDER BY date) AS prev_day_cases
+    ) AS cases_7day_avg
 FROM covid_analytics.dbo.daily_statistics
-ORDER BY date DESC;
 ```
 
-## 🔧 Configuration
-
-### Linked Service: Azure Data Lake
-
-```json
-{
-  "name": "AzureDataLakeStorage",
-  "type": "AzureBlobFS",
-  "typeProperties": {
-    "url": "https://covidadlsgen2.dfs.core.windows.net",
-    "accountKey": "your-storage-key"
-  }
-}
-```
-
-### Dataset: ECDC Data
-
-```json
-{
-  "name": "ECDC_Dataset",
-  "type": "DelimitedText",
-  "linkedServiceName": "AzureDataLakeStorage",
-  "typeProperties": {
-    "location": {
-      "type": "AzureBlobFSLocation",
-      "fileSystem": "ecdc",
-      "folderPath": "covid-data"
-    },
-    "columnDelimiter": ",",
-    "escapeChar": "\\"
-  }
-}
-```
-
-## 📊 Key Metrics & KPIs
-
-- **Daily Case Growth Rate** - Rate of change in cases
-- **Case Fatality Rate** - Deaths / Cases
-- **Testing Rate** - Tests per 100,000 population
-- **Regional Variation** - Comparative analysis across regions
-- **Trend Analysis** - 7-day and 14-day moving averages
-
-## 📈 Power BI Dashboard Components
-
-1. **Overview Dashboard**
-   - Global case statistics
-   - Deaths by region
-   - Testing metrics
-
-2. **Regional Analysis**
-   - Regional comparison charts
-   - Geographic heat maps
-   - Regional trends
-
-3. **Trend Analysis**
-   - Time-series charts
-   - Growth rate trends
-   - Forecast visualizations
-
-4. **Data Quality Dashboard**
-   - Data freshness metrics
-   - Missing data indicators
-   - Quality scores
+---
 
 ## 🧪 Testing
 
-### Data Quality Tests
-
-```python
-# Pytest for data validation
-def test_data_completeness():
-    df = spark.read.parquet("adls/bronze/covid_data")
-    assert df.filter(col("date").isNull()).count() == 0
-    assert df.filter(col("country").isNull()).count() == 0
-```
-
-### Pipeline Tests
-
 ```bash
-# Validate pipeline definitions
+# Validate pipeline
 az datafactory pipeline validate \
   --factory-name covid-adf \
   --name ingest_pipeline
+
+# Check data quality
+SELECT COUNT(*) FROM processed_table
+WHERE required_column IS NULL
 ```
+
+---
 
 ## 🐛 Troubleshooting
 
-### Issue: Pipeline Execution Timeout
-- Increase ADF DIU (Data Integration Units)
-- Optimize Spark transformation logic
-- Check data volume vs. resource allocation
+| Issue | Solution |
+|-------|----------|
+| Pipeline timeout | Increase ADF DIU capacity |
+| Schema changes | Update dataset definitions |
+| Data quality issues | Review transformation logic |
+| Cost overruns | Optimize retention policies |
 
-### Issue: Data Quality Issues
-- Verify source data schema hasn't changed
-- Check lookup table completeness
-- Review transformation logic in notebooks
+---
 
-### Issue: Cost Overruns
-- Monitor resource utilization
-- Schedule pipelines off-peak
-- Optimize storage retention policies
-
-## 🔐 Security & Compliance
-
-✅ **Implemented:**
-- Azure AD authentication
-- Data encryption at rest
-- HTTPS for data transit
-- Audit logging enabled
-- GDPR-compliant data handling
-
-## 📚 Best Practices
+## 🔐 Best Practices
 
 ✅ **Do:**
-- Use managed identities for ADF
+- Use managed identities
 - Implement retry policies
-- Monitor pipeline performance
-- Version control all definitions
+- Monitor performance
+- Version control definitions
 - Document assumptions
 
 ❌ **Don't:**
 - Store credentials in code
 - Skip data validation
-- Ignore cost optimization
+- Ignore cost monitoring
 - Hardcode values
+
+---
 
 ## 🤝 Contributing
 
-Contributions welcome! Please:
 1. Create feature branch
 2. Update pipeline definitions
 3. Add documentation
-4. Submit PR with testing details
+4. Submit PR
 
-## 📄 License
+---
 
-This project is open source under MIT License.
+## 📚 Resources
 
-## 🔗 Related Resources
-
-- [Azure Data Factory Documentation](https://docs.microsoft.com/azure/data-factory/)
-- [Apache Spark Documentation](https://spark.apache.org/docs/latest/)
+- [Azure Data Factory Docs](https://docs.microsoft.com/azure/data-factory/)
+- [Apache Spark Docs](https://spark.apache.org/docs/)
 - [Power BI Guide](https://docs.microsoft.com/power-bi/)
 - [ECDC Data](https://www.ecdc.europa.eu/)
 
 ---
 
-**Project Status:** Complete / Maintained  
 **Last Updated:** 2026-05-20  
-**Data Sources:** ECDC, Eurostat (Current)
+**Data Status:** Current  
+**Project Status:** Complete
